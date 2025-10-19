@@ -1,0 +1,26 @@
+<h1>{{ comanda }}</h1>
+
+<h3>Itens:</h3>
+<ul>
+  {% for item in comanda.itens.all %}
+    <li>{{ item.quantidade }}x {{ item.item_cardapio.nome }} - R$ {{ item.subtotal }}</li>
+  {% empty %}
+    <li>Nenhum item adicionado.</li>
+  {% endfor %}
+</ul>
+
+<h3>Adicionar item</h3>
+<form method="POST">
+  {% csrf_token %}
+  <select name="item_cardapio">
+    {% for i in itens_cardapio %}
+      <option value="{{ i.id }}">{{ i.nome }} - R$ {{ i.preco }}</option>
+    {% endfor %}
+  </select>
+  <input type="number" name="quantidade" value="1" min="1">
+  <button type="submit">Adicionar</button>
+</form>
+
+<h3>Total: R$ {{ comanda.total }}</h3>
+
+<a href="{% url 'finalizar_comanda' comanda.id %}">Finalizar Venda</a>

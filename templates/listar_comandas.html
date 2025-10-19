@@ -1,0 +1,14 @@
+<h1>Comandas em Aberto</h1>
+<a href="{% url 'nova_comanda' %}">Nova Comanda</a>
+
+<ul>
+  {% for comanda in comandas %}
+    <li>
+      <a href="{% url 'editar_comanda' comanda.id %}">
+        {{ comanda }}
+      </a> - Total: R$ {{ comanda.total }}
+    </li>
+  {% empty %}
+    <li>Nenhuma comanda aberta.</li>
+  {% endfor %}
+</ul>

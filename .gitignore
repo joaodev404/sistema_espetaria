@@ -1,0 +1,23 @@
+# Arquivos do Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+
+# Configurações locais
+.env
+venv/
+*.log
+
+# Cache e compilados
+*.pot
+*.pyc
+*.pyo
+*.pyd
+
+# Diretórios do Django
+/static/
+media/
+db.sqlite3
+
+# VS Code
+.vscode/

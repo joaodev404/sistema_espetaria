@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel da Espetaria</title>
+</head>
+<body>
+    <h1>Bem-vindo, {{ request.user.username }}!</h1>
+    <p>Este é o painel da espetaria.</p>
+    <a href="{% url 'logout' %}">Sair</a>
+</body>
+</html>
+
