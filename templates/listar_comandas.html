@@ -12,3 +12,19 @@
     <li>Nenhuma comanda aberta.</li>
   {% endfor %}
 </ul>
+
+<h2>Comandas em andamento</h2>
+<a href="{% url 'menu_atendente' %}">⬅ Voltar ao menu</a>
+<a href="{% url 'nova_comanda' %}">+ Nova comanda</a>
+
+<ul>
+  {% for comanda in comandas %}
+    <li>
+      <a href="{% url 'editar_comanda' comanda.id %}">
+        {{ comanda.cliente }} — Total: R$ {{ comanda.total }}
+      </a>
+    </li>
+  {% empty %}
+    <p>Nenhuma comanda em aberto.</p>
+  {% endfor %}
+</ul>

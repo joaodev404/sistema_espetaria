@@ -1,5 +1,6 @@
 from django.db import models
-from django.db import models
+from django.contrib.auth.models import User
+
 
 class ItemCardapio(models.Model):
     CATEGORIAS = [
@@ -16,21 +17,10 @@ class ItemCardapio(models.Model):
     def __str__(self):
         return f"{self.nome} ({self.categoria})"
 
-from django.db import models
-from django.contrib.auth.models import User
-
-class ItemCardapio(models.Model):
-    nome = models.CharField(max_length=100)
-    categoria = models.CharField(max_length=50)
-    preco = models.DecimalField(max_digits=8, decimal_places=2)
-    estoque = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.nome
-
 
 class Comanda(models.Model):
     atendente = models.ForeignKey(User, on_delete=models.CASCADE)
+    cliente = models.CharField(max_length=100, null=True, blank=True)  # <-- ADICIONADO
     data_abertura = models.DateTimeField(auto_now_add=True)
     data_fechamento = models.DateTimeField(null=True, blank=True)
     finalizada = models.BooleanField(default=False)
@@ -53,4 +43,3 @@ class ItemComanda(models.Model):
 
     def __str__(self):
         return f"{self.quantidade}x {self.item_cardapio.nome}"
-

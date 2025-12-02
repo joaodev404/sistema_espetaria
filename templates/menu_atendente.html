@@ -1,0 +1,9 @@
+<h2>Menu Principal</h2>
+
+<p>Bem-vindo, {{ request.user.username }}!</p>
+
+<ul>
+  <li><a href="{% url 'listar_comandas' %}">🧾 Ver vendas abertas</a></li>
+  <li><a href="{% url 'nova_comanda' %}">➕ Criar nova venda</a></li>
+  <li><a href="{% url 'logout' %}">🚪 Sair</a></li>
+</ul>
