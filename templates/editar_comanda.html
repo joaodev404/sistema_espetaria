@@ -12,7 +12,7 @@
 <h3>Adicionar item</h3>
 <form method="POST">
   {% csrf_token %}
-  <select name="item_cardapio">
+ <select name="item_id" required>
     {% for i in itens_cardapio %}
       <option value="{{ i.id }}">{{ i.nome }} - R$ {{ i.preco }}</option>
     {% endfor %}
@@ -24,3 +24,10 @@
 <h3>Total: R$ {{ comanda.total }}</h3>
 
 <a href="{% url 'finalizar_comanda' comanda.id %}">Finalizar Venda</a>
+
+<a href="{% url 'apagar_comanda' comanda.id %}"
+   onclick="return confirm('Tem certeza que deseja apagar esta venda?')" 
+   style="color:red;">
+   Apagar comanda
+</a>
+

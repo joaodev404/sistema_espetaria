@@ -20,7 +20,7 @@ class ItemCardapio(models.Model):
 
 class Comanda(models.Model):
     atendente = models.ForeignKey(User, on_delete=models.CASCADE)
-    cliente = models.CharField(max_length=100, null=True, blank=True)  # <-- ADICIONADO
+    cliente = models.CharField(max_length=100, null=True, blank=True)
     data_abertura = models.DateTimeField(auto_now_add=True)
     data_fechamento = models.DateTimeField(null=True, blank=True)
     finalizada = models.BooleanField(default=False)

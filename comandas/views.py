@@ -1,3 +1,4 @@
+from django.contrib.auth import logout
 from .models import Comanda, ItemCardapio, ItemComanda
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -54,7 +55,6 @@ def nova_comanda(request):
         return redirect('editar_comanda', comanda_id=comanda.id)
     return render(request, 'nova_comanda.html')
 
-
 @login_required
 def editar_comanda(request, comanda_id):
     comanda = get_object_or_404(Comanda, id=comanda_id, atendente=request.user)
@@ -63,8 +63,15 @@ def editar_comanda(request, comanda_id):
     if request.method == 'POST':
         item_id = request.POST.get('item_id')
         quantidade = int(request.POST.get('quantidade', 1))
+
         item = ItemCardapio.objects.get(id=item_id)
-        ItemComanda.objects.create(comanda=comanda, item=item, quantidade=quantidade)
+
+        ItemComanda.objects.create(
+            comanda=comanda,
+            item_cardapio=item,
+            quantidade=quantidade
+        )
+
         return redirect('editar_comanda', comanda_id=comanda.id)
 
     return render(request, 'editar_comanda.html', {
@@ -73,9 +80,46 @@ def editar_comanda(request, comanda_id):
     })
 
 
+
 @login_required
 def finalizar_comanda(request, comanda_id):
     comanda = get_object_or_404(Comanda, id=comanda_id, atendente=request.user)
     comanda.finalizada = True
     comanda.save()
     return redirect('listar_comandas')
+
+@login_required
+def apagar_comanda(request, comanda_id):
+    comanda = get_object_or_404(Comanda, id=comanda_id)
+
+    # Apenas atendente dono da comanda OU admin pode excluir
+    if request.user == comanda.atendente or request.user.is_staff:
+        comanda.delete()
+        return redirect('listar_comandas')  
+    else:
+        return redirect('menu_atendente')
+
+
+@login_required
+def vendas_fechadas(request):
+    vendas = Comanda.objects.filter(finalizada=True).order_by('-data_fechamento')
+
+    return render(request, 'vendas_fechadas.html', {
+        'vendas': vendas
+    })
+
+def detalhe_venda(request, comanda_id):
+    comanda = get_object_or_404(Comanda, id=comanda_id, finalizada=True)
+    itens = comanda.itens.all()
+
+    return render(request, 'detalhe_venda.html', {
+        'comanda': comanda,
+        'itens': itens
+    })
+
+def apagar_venda_finalizada(request, comanda_id):
+    comanda = get_object_or_404(Comanda, id=comanda_id, finalizada=True)
+    comanda.delete()
+    return redirect('vendas_fechadas')
+
+

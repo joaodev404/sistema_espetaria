@@ -1,0 +1,61 @@
+<html>
+<head>
+    <title>Detalhes da Venda</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #222;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background: #ddd;
+        }
+        .total {
+            font-size: 20px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Venda Finalizada - Comanda #{{ comanda.id }}</h1>
+
+<p><strong>Cliente:</strong> {{ comanda.cliente }}</p>
+<p><strong>Atendente:</strong> {{ comanda.atendente.username }}</p>
+<p><strong>Abertura:</strong> {{ comanda.data_abertura }}</p>
+<p><strong>Fechamento:</strong> {{ comanda.data_fechamento }}</p>
+
+<h2>Itens da Venda</h2>
+
+<table>
+    <tr>
+        <th>Item</th>
+        <th>Qtd</th>
+        <th>Preço</th>
+        <th>Subtotal</th>
+    </tr>
+
+    {% for item in itens %}
+    <tr>
+        <td>{{ item.item_cardapio.nome }}</td>
+        <td>{{ item.quantidade }}</td>
+        <td>R$ {{ item.item_cardapio.preco }}</td>
+        <td>R$ {{ item.subtotal }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<p class="total">TOTAL: R$ {{ comanda.total }}</p>
+
+<br>
+<a href="{% url 'vendas_fechadas' %}">Voltar para vendas finalizadas</a>
+
+</body>
+</html>
