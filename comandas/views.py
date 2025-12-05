@@ -80,7 +80,6 @@ def editar_comanda(request, comanda_id):
     })
 
 
-
 @login_required
 def finalizar_comanda(request, comanda_id):
     comanda = get_object_or_404(Comanda, id=comanda_id, atendente=request.user)
@@ -121,5 +120,37 @@ def apagar_venda_finalizada(request, comanda_id):
     comanda = get_object_or_404(Comanda, id=comanda_id, finalizada=True)
     comanda.delete()
     return redirect('vendas_fechadas')
+
+@login_required
+def remover_item(request, item_id):
+    item = get_object_or_404(ItemComanda, id=item_id)
+
+    # Permitir remover apenas se o atendente for o dono da comanda
+    if item.comanda.atendente != request.user:
+        return redirect('menu_atendente')
+
+    comanda_id = item.comanda.id
+    item.delete()
+
+    return redirect('editar_comanda', comanda_id=comanda_id)
+
+@login_required
+def adicionar_item(request, comanda_id):
+    comanda = get_object_or_404(Comanda, id=comanda_id, atendente=request.user)
+
+    if request.method == "POST":
+        item_id = request.POST.get("item_id")
+        quantidade = int(request.POST.get("quantidade", 1))
+
+        item = get_object_or_404(ItemCardapio, id=item_id)
+
+        ItemComanda.objects.create(
+            comanda=comanda,
+            item_cardapio=item,
+            quantidade=quantidade
+        )
+
+    return redirect('editar_comanda', comanda_id=comanda.id)
+
 
 

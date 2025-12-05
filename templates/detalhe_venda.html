@@ -1,61 +1,25 @@
-<html>
-<head>
-    <title>Detalhes da Venda</title>
-    <style>
-        body { font-family: Arial; padding: 20px; }
-        table {
-            width: 50%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #222;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background: #ddd;
-        }
-        .total {
-            font-size: 20px;
-            margin-top: 20px;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
+{% extends 'base.html' %}
 
-<h1>Venda Finalizada - Comanda #{{ comanda.id }}</h1>
+{% block titulo %}Detalhe da Venda{% endblock %}
 
-<p><strong>Cliente:</strong> {{ comanda.cliente }}</p>
-<p><strong>Atendente:</strong> {{ comanda.atendente.username }}</p>
-<p><strong>Abertura:</strong> {{ comanda.data_abertura }}</p>
-<p><strong>Fechamento:</strong> {{ comanda.data_fechamento }}</p>
+{% block conteudo %}
+<h1>Venda #{{ comanda.id }}</h1>
 
-<h2>Itens da Venda</h2>
+<h3>Cliente: {{ comanda.cliente }}</h3>
 
-<table>
-    <tr>
-        <th>Item</th>
-        <th>Qtd</th>
-        <th>Preço</th>
-        <th>Subtotal</th>
-    </tr>
+<h2>Itens</h2>
 
+<ul>
     {% for item in itens %}
-    <tr>
-        <td>{{ item.item_cardapio.nome }}</td>
-        <td>{{ item.quantidade }}</td>
-        <td>R$ {{ item.item_cardapio.preco }}</td>
-        <td>R$ {{ item.subtotal }}</td>
-    </tr>
+    <li>
+        {{ item.quantidade }}x {{ item.item_cardapio.nome }}
+        — R$ {{ item.subtotal }}
+    </li>
     {% endfor %}
-</table>
+</ul>
 
-<p class="total">TOTAL: R$ {{ comanda.total }}</p>
+<h2>Total: R$ {{ comanda.total }}</h2>
 
-<br>
-<a href="{% url 'vendas_fechadas' %}">Voltar para vendas finalizadas</a>
+<a class="btn btn-secondary" href="{% url 'vendas_fechadas' %}">Voltar</a>
 
-</body>
-</html>
+{% endblock %}

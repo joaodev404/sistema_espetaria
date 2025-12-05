@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 10px;
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+button, .btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+table {
+    width: 100%;
+    font-size: 16px;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    font-size: 16px;
+}
+
+@media (min-width: 700px) {
+    button, .btn {
+        width: auto;
+    }
+}

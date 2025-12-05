@@ -1,33 +1,55 @@
-<h1>{{ comanda }}</h1>
+{% extends 'base.html' %}
 
-<h3>Itens:</h3>
+{% block titulo %}Editar Comanda{% endblock %}
+
+{% block conteudo %}
+<h1>Comanda #{{ comanda.id }} — {{ comanda.cliente }}</h1>
+
+<h2>Itens</h2>
+
 <ul>
-  {% for item in comanda.itens.all %}
-    <li>{{ item.quantidade }}x {{ item.item_cardapio.nome }} - R$ {{ item.subtotal }}</li>
-  {% empty %}
-    <li>Nenhum item adicionado.</li>
-  {% endfor %}
+    {% for item in comanda.itens.all %}
+        <li>
+            {{ item.quantidade }}x {{ item.item_cardapio.nome }}
+            — R$ {{ item.subtotal }}
+
+            <a class="btn-danger-small"
+               href="{% url 'remover_item' item.id %}">
+                Remover
+            </a>
+        </li>
+    {% empty %}
+        <p>Nenhum item na comanda.</p>
+    {% endfor %}
 </ul>
 
-<h3>Adicionar item</h3>
+<hr>
+
+<h2>Adicionar Item</h2>
 <form method="POST">
-  {% csrf_token %}
- <select name="item_id" required>
-    {% for i in itens_cardapio %}
-      <option value="{{ i.id }}">{{ i.nome }} - R$ {{ i.preco }}</option>
-    {% endfor %}
-  </select>
-  <input type="number" name="quantidade" value="1" min="1">
-  <button type="submit">Adicionar</button>
+    {% csrf_token %}
+
+    <select name="item_id" required>
+        {% for i in itens_cardapio %}
+        <option value="{{ i.id }}">{{ i.nome }} — R$ {{ i.preco }}</option>
+        {% endfor %}
+    </select>
+
+    <input type="number" name="quantidade" min="1" value="1">
+
+    <button class="btn" type="submit">Adicionar</button>
 </form>
 
-<h3>Total: R$ {{ comanda.total }}</h3>
+<h2>Total: R$ {{ comanda.total }}</h2>
 
-<a href="{% url 'finalizar_comanda' comanda.id %}">Finalizar Venda</a>
+<hr>
 
-<a href="{% url 'apagar_comanda' comanda.id %}"
-   onclick="return confirm('Tem certeza que deseja apagar esta venda?')" 
-   style="color:red;">
-   Apagar comanda
+<a class="btn btn-green" href="{% url 'finalizar_comanda' comanda.id %}">
+    Finalizar Venda
 </a>
 
+<a class="btn btn-secondary" href="{% url 'menu_atendente' %}">
+    Voltar ao Menu
+</a>
+
+{% endblock %}

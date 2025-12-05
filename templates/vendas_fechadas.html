@@ -1,22 +1,29 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Vendas Finalizadas{% endblock %}
+
+{% block conteudo %}
 <h1>Vendas Finalizadas</h1>
 
-{% if vendas %}
-    <ul>
-        {% for venda in vendas %}
-        <li>
-            <a href="{% url 'detalhe_venda' venda.id %}">Venda #{{ venda.id }}</a>
-            - R$ {{ venda.total }}
+<ul>
+    {% for venda in vendas %}
+    <li>
+        <a href="{% url 'detalhe_venda' venda.id %}">
+            Venda #{{ venda.id }} — Cliente: {{ venda.cliente }}
+        </a>
 
-            <!-- Botão excluir -->
-            <a href="{% url 'apagar_venda_finalizada' venda.id %}"
-               style="color:red; margin-left: 10px;">
-               Excluir
-            </a>
-        </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>Nenhuma venda finalizada.</p>
-{% endif %}
+        <a class="btn-danger-small"
+           href="{% url 'apagar_venda_finalizada' venda.id %}">
+            Apagar
+        </a>
+    </li>
+    {% empty %}
+        <p>Nenhuma venda finalizada.</p>
+    {% endfor %}
+</ul>
+
+<a class="btn btn-secondary" href="{% url 'menu_atendente' %}">Voltar</a>
+
+{% endblock %}
 
 

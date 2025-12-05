@@ -1,6 +1,18 @@
-<h2>Criar nova comanda</h2>
-<form method="post">
-  {% csrf_token %}
-  <input type="text" name="cliente" placeholder="Nome do cliente" required>
-  <button type="submit">Criar</button>
+{% extends 'base.html' %}
+
+{% block titulo %}Nova Comanda{% endblock %}
+
+{% block conteudo %}
+<h1>Abrir Nova Comanda</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    <label>Nome do Cliente:</label>
+    <input type="text" name="cliente">
+
+    <button class="btn" type="submit">Criar</button>
 </form>
+
+<a class="btn btn-secondary" href="{% url 'menu_atendente' %}">Voltar</a>
+
+{% endblock %}
